@@ -1,0 +1,9 @@
+{
+  "name": "WebProjects",
+  "version": "1.0.0",
+  "dependencies": {},
+  "type": "module",
+  "devDependencies": {
+    "axios": "^0.21.0"
+  }
+}
