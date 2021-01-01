@@ -9,6 +9,20 @@ const balance = document.getElementById('balance'),
 const localStorageTransaction = JSON.parse(localStorage.getItem('transactions'));
 let transactions = localStorage.getItem('transactions') !== null ? localStorageTransaction : [];
 
+const doMagic = function (fn, delay){
+    let flag = true;
+    return function (){
+        let context = this;
+        let args = arguments;
+        if (flag){
+            fn.apply(context,args);
+            flag=false;
+            setTimeout(()=>{flag=false},delay);
+        }
+    }
+}
+
+const throttledAddTransaction = doMagic(addTransaction,3000);
 // Add Transaction
 function addTransaction(e){
     e.preventDefault();
@@ -96,4 +110,4 @@ init();
 
 //add EventListener
 
-form.addEventListener("submit", addTransaction);
+form.addEventListener("submit", throttledAddTransaction);
