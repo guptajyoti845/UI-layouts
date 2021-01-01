@@ -35,9 +35,22 @@ async function showPosts(){
 
 }
 
+
+const doMagic = function (fn, delay){
+    let timer;
+    return function (){
+        let context = this, args=arguments;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            fn.apply(context, args)
+        },delay)
+    }
+}
+const filterPostsWithDebounce = doMagic(filterPosts,300);
 //function to filterPosts
 
 async function filterPosts(e){
+    console.log("Fetching data");
     const term = e.target.value.toUpperCase();
     const posts = document.querySelectorAll('.post');
     posts.forEach(post => {
@@ -50,7 +63,6 @@ async function filterPosts(e){
             post.style.display = 'none';
         }
     })
-    console.log(e.target.value);
 }
 //initialize POSTS
 showPosts();
@@ -77,5 +89,5 @@ window.addEventListener("scroll", ()=>{
     }
 })
 
-filter.addEventListener("input", filterPosts)
+filter.addEventListener("input", filterPostsWithDebounce)
 
